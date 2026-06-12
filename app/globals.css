@@ -1,26 +1,102 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #eef6ff;
+  --foreground: #1e293b;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-nunito);
+}
+
+/* Inputs */
+
+input,
+select,
+textarea {
+  border-radius: 12px;
+  border: 1px solid #cbd5e1;
+  padding: 10px 14px;
+  transition: all .2s ease;
+  background: white;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+}
+
+input::placeholder,
+textarea::placeholder {
+  font-size: .55rem;
+  color: #94a3b8;
+}
+
+/* Labels */
+
+label {
+  font-weight: 300;
+  color: #334155;
+}
+
+/* Tarjetas */
+
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.0rem;
+  box-shadow:
+    0 1px 3px rgba(0,0,0,.08),
+    0 10px 25px rgba(0,0,0,.04);
+}
+
+/* Tablas */
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+thead {
+  background: #f8fafc;
+}
+
+th {
+  font-weight: 700;
+  color: #334155;
+}
+
+th,
+td {
+  padding: 12px;
+}
+
+/* Scroll */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 999px;
 }
