@@ -26,7 +26,7 @@ export default async function DashboardPreceptorPage() {
   return (
     <div className="p-8">
 
-      <ProteccionRol permitido="preceptor" />
+      
 
       <h1 className="text-4xl font-bold mb-8">
         Dashboard Preceptor

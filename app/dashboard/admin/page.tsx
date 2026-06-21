@@ -43,7 +43,7 @@ export default async function DashboardAdminPage() {
    
     <div className="p-8">
 
-      <ProteccionRol permitido="administrador" />
+     
 
       <h1 className="text-4xl font-bold mb-8">
         Dashboard Administrador

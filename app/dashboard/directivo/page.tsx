@@ -34,7 +34,7 @@ export default async function DashboardDirectivoPage() {
   return (
     <div className="p-8">
 
-      <ProteccionRol permitido="directivo" />
+     
 
       <h1 className="text-4xl font-bold mb-8">
         Dashboard Directivo

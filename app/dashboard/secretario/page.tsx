@@ -26,7 +26,7 @@ export default async function DashboardSecretarioPage() {
   return (
     <div className="p-8">
 
-      <ProteccionRol permitido="secretario" />
+   
 
       <h1 className="text-4xl font-bold mb-8">
         Dashboard Secretaría

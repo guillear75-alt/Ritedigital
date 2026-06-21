@@ -34,7 +34,7 @@ export default async function DashboardDocentePage() {
   return (
     <div className="p-8">
 
-      <ProteccionRol permitido="docente" />
+     
 
       <h1 className="text-4xl font-bold mb-8">
         Dashboard Docente
