@@ -2,13 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import Link from "next/link";
 
-export default function ValoracionesCursoPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default function ValoracionesCursoPage() {
   const [curso, setCurso] = useState("");
   const [materia, setMateria] = useState("");
   const [periodo, setPeriodo] = useState("1° Cuatrimestre");
@@ -38,7 +33,6 @@ export default function ValoracionesCursoPage({
     const { data: materiasData } = await supabase
       .from("materias")
       .select("*")
-      .order("anio")
       .order("nombre");
 
     setCursos(cursosData || []);
@@ -73,7 +67,7 @@ export default function ValoracionesCursoPage({
     (alumno) => ({
       alumno_id: alumno.id,
       materia_id: Number(materia),
-      docente_id: 143,
+      docente_id: 127,
       periodo,
       ciclo_lectivo: 2026,
       valoracion:
@@ -105,18 +99,11 @@ export default function ValoracionesCursoPage({
 }
 
   return (
-  <div className="p-8">
+    <div className="p-8">
 
-    <Link
-      href="/valoraciones"
-      className="inline-flex items-center mb-4 text-blue-600 hover:text-blue-800 font-medium"
-    >
-      ← Volver a Cursos
-    </Link>
-
-    <h1 className="text-3xl font-bold mb-6 mt-2">
-      Valoraciones - {curso}
-    </h1>
+      <h1 className="text-3xl font-bold mb-6">
+        Valoraciones por Curso
+      </h1>
 
       <div className="bg-white rounded-xl shadow p-6 space-y-4">
 
@@ -153,7 +140,7 @@ export default function ValoracionesCursoPage({
               key={m.id}
               value={m.id}
             >
-              {m.nombre} ({m.anio}°)
+              {m.nombre}
             </option>
           ))}
         </select>

@@ -149,58 +149,106 @@ function editarUsuario(usuario: any) {
 </button>
 </div>
       </div>
+      
 
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <table className="w-full">
           <thead className="bg-slate-100">
-            <tr>
-              <th className="p-3 text-left">Nombre</th>
-              <th className="p-3 text-left">Email</th>
-              <th className="p-3 text-left">Rol</th>
-              <th className="p-3 text-left">Acciones</th>
-            </tr>
-          </thead>
+  <tr>
+    <th className="p-3 text-left">Nombre</th>
+    <th className="p-3 text-left">Email</th>
+    <th className="p-3 text-left">Rol</th>
+    <th className="p-3 text-left">Acceso</th>
+    <th className="p-3 text-left">Acciones</th>
+  </tr>
+</thead>
 
-          <tbody>
-            {usuarios.map((usuario) => (
-              <tr
-                key={usuario.id}
-                className="border-t"
-              >
-                <td className="p-3">
-                  {usuario.nombre}
-                </td>
+<tbody>
+  {usuarios.map((usuario) => (
+    <tr
+      key={usuario.id}
+      className="border-t"
+    >
+      <td className="p-3">
+        {usuario.nombre}
+      </td>
 
-                <td className="p-3">
-                  {usuario.email}
-                </td>
+      <td className="p-3">
+        {usuario.email}
+      </td>
 
-                <td className="p-3">
-                  {usuario.roles?.nombre}
-                </td>
+      <td className="p-3">
+        {usuario.roles?.nombre}
+      </td>
 
-                <td className="p-3 flex gap-3">
-                <button
-                  onClick={() =>
-                    editarUsuario(usuario)
-                  }
-                  className="text-blue-600"
-                >
-                  ✏️ Editar
-                </button>
+      <td className="p-3">
+        <button
+          onClick={() => {
+            const rol = usuario.roles?.nombre
+              ?.toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "");
 
-                <button
-                  onClick={() =>
-                    eliminarUsuario(usuario.id)
-                  }
-                  className="text-red-600"
-                >
-                  🗑️ Eliminar
-                </button>
-              </td>
-              </tr>
-            ))}
-          </tbody>
+            localStorage.setItem("rol", rol);
+
+            switch (rol) {
+              case "docente":
+                window.location.href =
+                  "/dashboard/docente";
+                break;
+
+              case "preceptor":
+                window.location.href =
+                  "/dashboard/preceptor";
+                break;
+
+              case "secretario":
+                window.location.href =
+                  "/dashboard/secretario";
+                break;
+
+              case "directivo":
+                window.location.href =
+                  "/dashboard/directivo";
+                break;
+
+              case "administrador":
+                window.location.href =
+                  "/dashboard/admin";
+                break;
+
+              default:
+                alert("Rol no reconocido");
+            }
+          }}
+          className="bg-green-600 text-white px-3 py-1 rounded"
+        >
+          🚀 Ingresar
+        </button>
+      </td>
+
+      <td className="p-3 flex gap-3">
+        <button
+          onClick={() =>
+            editarUsuario(usuario)
+          }
+          className="text-blue-600"
+        >
+          ✏️ Editar
+        </button>
+
+        <button
+          onClick={() =>
+            eliminarUsuario(usuario.id)
+          }
+          className="text-red-600"
+        >
+          🗑️ Eliminar
+        </button>
+      </td>
+    </tr>
+  ))}
+</tbody>
         </table>
       </div>
     </div>

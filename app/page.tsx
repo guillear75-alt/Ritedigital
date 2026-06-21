@@ -9,13 +9,15 @@ export default function HomePage() {
   const [perfil, setPerfil] = useState("");
 
   function ingresar() {
-    if (!perfil) {
-      alert("Seleccione un perfil");
-      return;
-    }
+  if (!perfil) {
+    alert("Seleccione un perfil");
+    return;
+  }
 
-    localStorage.setItem("rol", perfil);
-    router.push("/dashboard");
+  router.push(`/login/${perfil}`);
+
+
+    
   }
 
   const perfiles = [
@@ -45,20 +47,57 @@ export default function HomePage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center p-6">
       <div className="w-full max-w-6xl bg-white rounded-3xl shadow-2xl overflow-hidden">
 
-        <div className="p-12 text-center border-b">
-          <h1 className="text-6xl font-black tracking-tight text-slate-900">
-            RITE
-          </h1>
+        <div className="p-10 border-b">
+  <div className="flex flex-col md:flex-row items-center justify-between gap-8">
 
-          <p className="text-2xl text-slate-700 mt-3">
-            Registro Institucional de Trayectorias Educativas
-          </p>
+    {/* Logo e institución */}
+    <div className="flex items-center gap-5">
+      <div className="w-28 h-28 bg-slate-100 rounded-2xl flex items-center justify-center border">
+        <img
+          src="/logo-naon.png"
+          alt="Logo Institucional"
+          className="max-h-30 object-contain"
+        />
+      </div>
 
-          <p className="text-slate-500 mt-4 max-w-2xl mx-auto">
-            Plataforma para la gestión, seguimiento y evaluación
-            de las trayectorias escolares.
-          </p>
-        </div>
+      <div>
+        <p className="text-sm text-slate-500 uppercase tracking-wider">
+          Institución Educativa
+        </p>
+
+        <h2 className="text-1xl font-bold text-slate-900">
+          E.E.S. N° 1  
+        </h2>
+        <h5 className="text-1xl font-bold text-slate-900">
+         J.M. Estrada
+        </h5>
+
+        <p className="text-slate-600">
+          Distrito de Nueve de Julio
+        </p>
+        <p className="text-slate-600">
+          Carlos Maria Naon
+        </p>
+      </div>
+    </div>
+
+    {/* Nombre del sistema */}
+    <div className="text-center md:text-right">
+      <h1 className="text-6xl font-black tracking-tight text-slate-900">
+        RITE
+      </h1>
+
+      <p className="text-xl text-slate-700 mt-2">
+        Registro Institucional de Trayectorias Educativas
+      </p>
+
+      <p className="text-sm text-slate-500 mt-2">
+        Gestión académica, asistencia, valoraciones y seguimiento pedagógico
+      </p>
+    </div>
+
+  </div>
+</div>
 
         <div className="p-10">
           <h2 className="text-center text-lg font-semibold text-slate-700 mb-8">
@@ -119,14 +158,21 @@ export default function HomePage() {
 
           <button
             onClick={() => {
-              localStorage.setItem("rol", "administrador");
-              router.push("/dashboard");
+              localStorage.setItem(
+                "rol",
+                "administrador"
+              );
+
+              router.push(
+                "/dashboard/admin"
+              );
             }}
             className="hover:text-slate-900"
           >
             Administración del sistema
           </button>
         </div>
+
       </div>
     </div>
   );

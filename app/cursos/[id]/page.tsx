@@ -3,11 +3,16 @@ import Link from "next/link";
 
 export default async function CursoDetalle({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ materia?: string }>;
 }) {
   const { id } = await params;
-  const cursoId = Number(id);
+const { materia } = await searchParams;
+
+const cursoId = Number(id);
+const materiaId = Number(materia);
 
   const { data: curso } = await supabase
     .from("cursos")
@@ -19,6 +24,12 @@ export default async function CursoDetalle({
     .from("alumno_curso")
     .select("alumno_id")
     .eq("curso_id", cursoId)
+
+  const { data: materiaData } = await supabase
+    .from("materias")
+    .select("*")
+    .eq("id", materiaId)
+    .single();
 
   const alumnoIds =
     relaciones?.map((r) => r.alumno_id) || [];
@@ -50,6 +61,10 @@ if (alumnoIds.length > 0) {
         <h1 className="text-4xl font-bold text-slate-900">
           {curso?.nombre}
         </h1>
+
+        <p className="text-lg text-blue-600 mt-2">
+          Materia: {materiaData?.nombre}
+        </p>
 
         <p className="text-slate-500 mt-2">
           {alumnos.length} alumnos registrados
@@ -92,7 +107,7 @@ if (alumnoIds.length > 0) {
             </div>
 
               <Link
-                href={`/alumnos/${alumno.id}`}
+                href={`/valoraciones/alumno/${alumno.id}?materia=${materiaId}`}
                 className="
                   bg-slate-900
                   hover:bg-slate-700
