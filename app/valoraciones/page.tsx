@@ -107,16 +107,23 @@ export default function ValoracionesCursoPage({
   return (
   <div className="p-8">
 
-    <Link
-      href="/valoraciones"
-      className="inline-flex items-center mb-4 text-blue-600 hover:text-blue-800 font-medium"
-    >
-      ← Volver a Cursos
-    </Link>
+    <div className="flex gap-2 mb-6">
 
-    <h1 className="text-3xl font-bold mb-6 mt-2">
-      Valoraciones - {curso}
-    </h1>
+  <Link
+    href="/dashboard"
+    className="bg-green-600 text-white px-4 py-2 rounded-xl"
+  >
+    Dashboard
+  </Link>
+
+  <Link
+    href="/mis-cursos"
+    className="bg-blue-600 text-white px-4 py-2 rounded-xl"
+  >
+    Mis Cursos
+  </Link>
+
+</div>
 
       <div className="bg-white rounded-xl shadow p-6 space-y-4">
 
@@ -174,17 +181,32 @@ export default function ValoracionesCursoPage({
 
       </div>
 
+      
+
       {alumnos.length > 0 && (
-        <div className="mt-6 bg-white rounded-xl shadow">
+        <div className="grid md:grid-cols-2 gap-4 mt-6">
 
           {alumnos.map((alumno) => (
-            <div
-              key={alumno.id}
-              className="border-b p-4"
+            <div key={alumno.id}
+            className="bg-white rounded-2xl shadow-lg p-5"
+
             >
-              <div className="font-medium mb-2">
-                {alumno.apellido}, {alumno.nombre}
-              </div>
+             
+
+              <div className="flex items-center gap-3 mb-4">
+
+  <div className="w-10 h-10 rounded-full bg-blue-900 text-white flex items-center justify-center font-bold">
+    {alumno.apellido?.charAt(0)}
+    {alumno.nombre?.charAt(0)}
+  </div>
+
+  <div>
+    <h3 className="font-bold">
+      {alumno.apellido}, {alumno.nombre}
+    </h3>
+  </div>
+
+</div>
 
               <select
   value={
@@ -221,7 +243,7 @@ export default function ValoracionesCursoPage({
           ))}
           <button
   onClick={guardarValoraciones}
-  className="mt-6 bg-blue-600 text-white px-5 py-2 rounded"
+  className="mt-4 bg-blue-600 text-white px-3 py-2 rounded"
 >
   Guardar todas las valoraciones
 </button>

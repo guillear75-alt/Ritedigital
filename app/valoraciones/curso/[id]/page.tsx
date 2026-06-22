@@ -60,27 +60,27 @@ export default async function Page({
 
     
   return (
-  <div className="p-8">
+  <div className="p-3">
 
-    <div className="flex gap-3 mb-6">
+    <div className="flex gap-2 mb-3">
 
   <Link
     href="/reportes/curso"
-    className="bg-slate-600 text-white px-4 py-2 rounded"
+    className="bg-slate-600 text-white font-bold px-2 py-2 rounded-xl"
   >
-    ← Volver
+    Volver
   </Link>
 
   <Link
     href="/reportes"
-    className="bg-blue-600 text-white px-4 py-2 rounded"
+    className="bg-blue-600 text-white font-bold px-3 py-2 rounded-xl"
   >
     Reportes
   </Link>
 
   <Link
     href="/dashboard"
-    className="bg-green-600 text-white px-4 py-2 rounded"
+    className="bg-green-600 text-white font-bold px-3 py-2 rounded-xl"
   >
     Dashboard
   </Link>
@@ -91,121 +91,94 @@ export default async function Page({
       Curso {curso}
     </h1>
 
-    <p className="text-slate-600 mb-6">
+    <p className="text-slate-600 font-bold mb-4">
       {totalValorados} / {totalAlumnos} valorados
     </p>
 
-    <div className="bg-white rounded-xl shadow overflow-hidden">
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
 
-      <table className="w-full">
+  {alumnos?.map((alumno) => {
 
-        <thead className="bg-slate-100">
-          <tr>
-            <th className="p-3 text-left">
-              Alumno
-            </th>
+    const valoracionAlumno =
+      valoraciones?.find(
+        (v) => v.alumno_id === alumno.id
+      );
 
-            <th className="p-3 text-left">
-              Estado
-            </th>
+    const valorado = !!valoracionAlumno;
 
-            <th className="p-3 text-left">
-              Valoración
-            </th>
+    return (
 
-            <th className="p-3 text-left">
-              Observación
-            </th>
-          </tr>
-        </thead>
-
-        <tbody>
-
-          {alumnos?.map((alumno) => {
-
-            const valoracionAlumno =
-              valoraciones?.find(
-                (v) => v.alumno_id === alumno.id
-              );
-
-const valorado = !!valoracionAlumno;
-
-            return (
-              <tr
-                key={alumno.id}
-                className="border-t"
-              >
-                <td className="p-3">
-                  {alumno.apellido}, {alumno.nombre}
-                </td>
-
-                <td className="p-3">
-
-              {valorado ? (
-
-    <div className="flex items-center gap-3">
-
-      <span className="text-green-600 font-semibold">
-        ✔ Valorado
-      </span>
-
-      <a
-        href={`/valoraciones/alumno/${alumno.id}?curso=${cursoId}&materia=${materiaId}&docente=143`}
-        className="bg-amber-500 text-white px-3 py-1 rounded"
+      <div
+        key={alumno.id}
+        className="bg-white rounded-2xl shadow-lg p-5"
       >
-        Editar
-      </a>
 
-    </div>
+        <div className="flex items-center justify-between mb-4">
 
-  ) : (
+          <div className="flex items-center gap-3">
 
-    <a
-      href={`/valoraciones/alumno/${alumno.id}?curso=${cursoId}&materia=${materiaId}&docente=143`}
-      className="bg-blue-600 text-white px-3 py-1 rounded"
-    >
-      Valorar
-    </a>
+            <div className="w-10 h-10 rounded-full bg-green-700 text-white flex items-center justify-center font-bold">
+              {alumno.apellido?.charAt(0)}
+              {alumno.nombre?.charAt(0)}
+            </div>
 
-  )}
+            <div>
 
-</td>
-<td className="p-3 text-sm text-slate-600">
+              <h3 className="font-bold">
+                {alumno.apellido}, {alumno.nombre}
+              </h3>
 
-  {valoracionAlumno?.observaciones
-    ? valoracionAlumno.observaciones.substring(0, 30) + "..."
-    : "-"}
+            </div>
 
-</td>
-<td className="p-3">
+          </div>
 
-  {valoracionAlumno?.observaciones ? (
+          {valorado ? (
+            <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
+              Valorado
+            </span>
+          ) : (
+            <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-semibold">
+              Pendiente
+            </span>
+          )}
 
-    <a
-      href={`/valoraciones/alumno/${alumno.id}?curso=${cursoId}&materia=${materiaId}&docente=143`}
-      className="text-blue-600 hover:underline"
-    >
-      📝 Ver
-    </a>
+        </div>
 
-  ) : (
+        <div className="space-y-2 mb-4">
 
+          <p className="text-sm text-slate-600">
+            <strong>Valoración:</strong>{" "}
+            {valoracionAlumno?.valoracion || "-"}
+          </p>
+
+          <p className="text-sm text-slate-600">
+            <strong>Observación:</strong>{" "}
+            {valoracionAlumno?.observaciones
+              ? valoracionAlumno.observaciones.substring(0, 40) + "..."
+              : "-"}
+          </p>
+
+        </div>
+
+        <a
+          href={`/valoraciones/alumno/${alumno.id}?curso=${cursoId}&materia=${materiaId}&docente=143`}
+          className={`
+            block text-center py-2 rounded-xl text-white font-bold ${valorado
+              ? "bg-amber-800" : "bg-blue-600"}
+          `}
+        >
+          {valorado
+            ? "Editar Valoración"
+            : "Valorar Alumno"}
+        </a>
+
+      </div>
+
+    );
+  })}
+
+</div>
     "-"
-
-  )}
-
-</td>
-
-              </tr>
-            );
-
-          })}
-
-        </tbody>
-
-      </table>
-
-    </div>
 
   </div>
 );

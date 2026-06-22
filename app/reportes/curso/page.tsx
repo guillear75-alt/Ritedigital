@@ -11,20 +11,20 @@ const cursos = [
 
 export default function ReportesCursoPage() {
   return (
-    <div className="p-8">
+    <div className="p-5">
 
-      <div className="flex gap-2 mb-6">
+      <div className="flex gap-2 mb-5">
 
         <Link
           href="/reportes"
-          className="bg-blue-600 text-white px-4 py-2 rounded"
+          className="bg-blue-600 text-white font-bold px-3 py-2 rounded-xl"
         >
           Reportes
         </Link>
 
         <Link
           href="/dashboard/admin"
-          className="bg-green-600 text-white px-4 py-2 rounded"
+          className="bg-green-600 text-white font-bold px-3 py-2 rounded-xl"
         >
           Dashboard
         </Link>
@@ -51,14 +51,8 @@ export default function ReportesCursoPage() {
           <Link
             key={curso.id}
             href={`/reportes/curso/${curso.id}`}
-            className="
-              bg-white
-              rounded-2xl
-              shadow-lg
-              p-6
-              hover:shadow-xl
-              transition
-            "
+            className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl
+              transition"
           >
 
             <div className="flex justify-between items-start">

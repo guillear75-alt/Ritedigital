@@ -13,22 +13,22 @@ export default async function ReportesPage() {
 
     
     
-    <div className="p-8">
+    <div className="p-5">
       
 
-      <div className="flex gap-4 mb-6">
+      <div className="flex gap-3 mb-3">
 
         
         <Link
           href="/reportes/curso"
-          className="bg-green-600 text-white px-4 py-2 rounded"
+          className="bg-green-800 text-white font-bold px-3 py-2 rounded-xl"
         >
           Reportes por Curso
         </Link>
 
          <Link
           href="/dashboard"
-          className="bg-green-600 text-white px-4 py-2 rounded"
+          className="bg-green-800 text-white font-bold px-3 py-2 rounded-xl"
         >
           Dashboard
         </Link>

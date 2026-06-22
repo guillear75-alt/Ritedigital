@@ -39,21 +39,21 @@ export default async function MisCursosPage() {
               {item.cursos.nombre}
             </h2>
 
-            <p className="text-slate-600 mt-2">
+            <p className="text-slate-600 font-bold mt-2">
               Materia: {item.materias.nombre}
             </p>
 
             <div className="mt-4 flex gap-2">
               <Link
                 href={`/valoraciones/curso/${item.cursos.id}?materia=${item.materias.id}`}
-                className="bg-blue-600 text-white px-3 py-2 rounded"
+                className="bg-blue-600 text-white font-bold px-3 py-2 rounded-xl"
               >
                 Valoraciones
               </Link>
 
               <Link
                 href={`/calificaciones/cursos/${item.cursos.id}?materia=${item.materias.id}`}
-                className="bg-green-600 text-white px-3 py-2 rounded"
+                className="bg-green-600 text-white font-bold px-3 py-2 rounded-xl"
               >
                 Calificaciones
               </Link>

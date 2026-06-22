@@ -1,5 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
+import ProteccionDashboard from "@/components/ProteccionDashboard";
 
 export default async function DashboardPage() {
 
