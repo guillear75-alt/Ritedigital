@@ -91,18 +91,36 @@ const { count: intervenciones } = await supabase
 
 const alertasActivas = ausentes ?? 0;
 
-return(
-    <div className="p-8">
+const { data: ultimasValoraciones } = await supabase
+  .from("valoraciones")
+  .select("fecha, valoracion")
+  .order("fecha", { ascending: false })
+  .limit(3);
 
-      <h1 className="text-4xl font-bold mb-2">
+const { data: ultimasAsistencias } = await supabase
+  .from("asistencias")
+  .select("fecha, estado")
+  .order("fecha", { ascending: false })
+  .limit(3);
+
+const { data: ultimasIntervenciones } = await supabase
+  .from("intervenciones_rite")
+  .select("fecha, motivo")
+  .order("fecha", { ascending: false })
+  .limit(3);
+
+return(
+    <div className="p-5">
+
+      <h1 className="text-4xl font-bold mb-1">
         Panel de Gestión Institucional Direccion
       </h1>
 
-      <p className="text-slate-400 mb-8">
+      <p className="text-slate-400 mb-3">
         Resumen general de la situación escolar.
       </p>
 
- <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+ <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-4">
 
   <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
     <h2 className="text-slate-400 text-sm uppercase">
@@ -142,10 +160,10 @@ return(
 
 </div>
 
-<div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+<div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-3">
 
   <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-    <h2 className="text-xl font-semibold text-white font-bold mb-4">
+    <h2 className="text-xl font-semibold text-white font-bold mb-2">
       Situación Institucional
     </h2>
 
@@ -241,16 +259,31 @@ return(
 </div>
 
 <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-  <h2 className="text-xl font-semibold text-white mb-4">
-    Actividad reciente
+  <h2 className="text-2xl text-white font-bold mb-3">
+  Actividad Institucional Reciente
   </h2>
 
-  <div className="space-y-3 text-slate-300">
-    <p>• Sistema operativo y conectado.</p>
-    <p>• Módulo de alumnos disponible.</p>
-    <p>• Módulo de asistencia disponible.</p>
-    <p>• Módulo de valoraciones disponible.</p>
-  </div>
+<div className="space-y-2 text-white">
+
+  {ultimasValoraciones?.map((v, i) => (
+    <div key={`v-${i}`}>
+      • Valoración {v.valoracion} registrada el {v.fecha}
+    </div>
+  ))}
+
+  {ultimasAsistencias?.map((a, i) => (
+    <div key={`a-${i}`}>
+      • Asistencia registrada ({a.estado}) el {a.fecha}
+    </div>
+  ))}
+
+  {ultimasIntervenciones?.map((i, idx) => (
+    <div key={`i-${idx}`}>
+      • Intervención RITE registrada el {i.fecha}
+    </div>
+  ))}
+
+</div>
 
 
       </div>

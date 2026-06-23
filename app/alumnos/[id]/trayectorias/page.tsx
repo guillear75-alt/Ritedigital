@@ -79,22 +79,58 @@ export default async function TrayectoriasPage({
   }, {})
 );
 
+let riesgo = "Bajo";
+let colorRiesgo = "text-green-600";
+
+if (ted > 0 || ausencias >= 15) {
+  riesgo = "Alto";
+  colorRiesgo = "text-red-600";
+} else if (tep > 0 || ausencias >= 5) {
+  riesgo = "Medio";
+  colorRiesgo = "text-amber-600";
+}
+
+
   return (
     <div className="min-h-screen bg-slate-100 p-8">
 
       <div className="max-w-6xl mx-auto">
+      <div className="flex justify-between items-center mb-2">
 
-        <p className="text-slate-500">
-          Trayectoria Educativa
-        </p>
+        <div>
+          <p className="text-slate-500">
+            Trayectoria Educativa
+          </p>
+        </div>
 
-        <h1 className="text-4xl font-bold mb-8">
+        <a
+          href={`/alumnos/${id}`}
+          className="bg-slate-600 hover:bg-slate-700 text-white px-4 py-2
+            rounded-lg font-semibold"
+        >
+          Volver
+        </a>
+
+</div>
+
+        <h1 className="text-4xl font-bold mb-3">
           {alumno?.apellido}, {alumno?.nombre}
         </h1>
+        
+        <div className="mb-3 text-slate-600">
+          <p>
+            Curso: {alumno?.curso}
+          </p>
 
-        <div className="grid md:grid-cols-5 gap-3">
+          <p>
+            DNI: {alumno?.dni}
+          </p>
 
-          <div className="bg-white rounded-xl p-6 shadow">
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
+
+          <div className="bg-white rounded-xl p-4 shadow">
             <h3 className="text-slate-900">
               Ausencias
             </h3>
@@ -104,7 +140,7 @@ export default async function TrayectoriasPage({
             </p>
           </div>
 
-          <div className="bg-white rounded-xl p-6 shadow">
+          <div className="bg-white rounded-xl p-4 shadow">
             <h3 className="text-slate-500">
               TEA
             </h3>
@@ -114,7 +150,7 @@ export default async function TrayectoriasPage({
             </p>
           </div>
 
-          <div className="bg-white rounded-xl p-6 shadow">
+          <div className="bg-white rounded-xl p-4 shadow">
             <h3 className="text-slate-900">
               TEP
             </h3>
@@ -124,7 +160,7 @@ export default async function TrayectoriasPage({
             </p>
           </div>
 
-          <div className="bg-white rounded-xl p-6 shadow">
+          <div className="bg-white rounded-xl p-4 shadow">
             <h3 className="text-slate-900">
               TED
             </h3>
@@ -134,43 +170,79 @@ export default async function TrayectoriasPage({
             </p>
           </div>
 
-          <div className="bg-white rounded-xl p-6 shadow">
+          <div className="bg-white rounded-xl p-4 shadow">
             <h3 className="text-slate-900">
               Promedio
             </h3>
 
-            <p className="text-2xl font-bold text-indigo-900">
+            <p className="text-3xl font-bold text-indigo-900">
               {promedio}
             </p>
           </div>
+          <div className="bg-white rounded-xl p-4 shadow">
+  <h3 className="text-slate-500">
+    Riesgo
+  </h3>
+
+  <p className={`text-2xl font-bold ${colorRiesgo}`}>
+    {riesgo}
+  </p>
+</div>
 
         </div>
 
-        <div className="mt-8 bg-white rounded-2xl p-6 shadow">
+        <div className="mt-5 bg-white rounded-2xl p-4 shadow">
 
           <h2 className="text-xl font-bold mb-4">
             Estado de Trayectoria
           </h2>
 
           {ausencias < 10 &&
-          ted === 0 &&
-          tep === 0 ? (
-            <div className="bg-green-50 border border-green-300 rounded-xl p-4">
-              Trayectoria sostenida.
-            </div>
-          ) : (
-            <div className="bg-amber-50 border border-amber-300 rounded-xl p-4">
-              Requiere seguimiento pedagógico.
-            </div>
-          )}
+ted === 0 &&
+tep === 0 ? (
+  <div className="bg-green-50 border border-green-300 rounded-xl p-4">
+    <p className="font-semibold">
+      Trayectoria sostenida.
+    </p>
 
-        </div>
-        <div className="mt-8 bg-white rounded-2xl p-6 shadow">
+    <p className="text-sm mt-2">
+      Predominio de valoraciones TEA, sin alertas pedagógicas registradas.
+    </p>
+  </div>
+) : (
+  <div className="bg-amber-50 border border-amber-300 rounded-xl p-4">
+    <p className="font-semibold">
+      Requiere seguimiento pedagógico.
+    </p>
 
-  <h2 className="text-xl font-bold mb-6">
+    <p className="text-sm mt-2">
+      Se registran indicadores que requieren acompañamiento institucional.
+    </p>
+  </div>
+)}
+</div>
+        <div className="mt-5 bg-white rounded-2xl p-4 shadow">
+
+  <div className="flex justify-between items-center mb-6">
+
+  <h2 className="text-xl font-bold">
     Valoraciones Pedagógicas
   </h2>
 
+  <div
+  className="
+    bg-slate-700
+    text-white
+    px-4
+    py-2
+    rounded-lg
+    font-semibold
+  "
+>
+  Imprimir Informe
+</div>
+
+</div>
   {valoracionesUnicas.length === 0 ? (
   <p className="text-slate-500">
     No existen valoraciones registradas.
@@ -226,6 +298,45 @@ export default async function TrayectoriasPage({
     </div>
   </>
 )}
+
+</div>
+
+<div className="mt-8 bg-white rounded-2xl p-6 shadow">
+
+  <h2 className="text-xl font-bold mb-6">
+    Intervenciones RITE
+  </h2>
+
+  {intervenciones?.length === 0 ? (
+
+    <p className="text-slate-500">
+      No existen intervenciones registradas.
+    </p>
+
+  ) : (
+
+    <div className="space-y-4">
+
+      {(intervenciones ?? []).map((i: any) => (
+
+        <div
+          key={i.id}
+          className="border-l-4 border-blue-500 pl-4 py-2"
+        >
+          <p className="font-semibold">
+            {i.fecha}
+          </p>
+
+          <p className="text-slate-700">
+            {i.descripcion || i.observacion || "Intervención registrada"}
+          </p>
+        </div>
+
+      ))}
+
+    </div>
+
+  )}
 
 </div>
 

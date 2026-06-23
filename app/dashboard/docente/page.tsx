@@ -2,6 +2,8 @@ import { supabase } from "@/lib/supabase";
 import ProteccionRol from "@/components/ProteccionRol";
 import GraficoCalificaciones from "@/components/GraficoCalificaciones";
 
+
+
 export default async function DashboardDocentePage() {
 
   const docenteId = 143;

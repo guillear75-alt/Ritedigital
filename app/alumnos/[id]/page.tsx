@@ -106,24 +106,70 @@ const promedio =
 );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 text-slate-900 p-8">
+    <div className="min-h-screen bg-gradient-to-br
+         from-slate-50 to-slate-100 text-slate-900 p-5">
+
       <div className="max-w-7xl mx-auto">
 
-        <p className="text-slate-500 mb-2">
-  Legajo digital del estudiante
-</p>
+        <div className="flex justify-between items-center mb-3">
 
-<h1 className="text-4xl font-bold text-slate-900 mb-8">
-  {alumno.apellido}, {alumno.nombre}
-</h1>
+          <div>
+            <p className="text-slate-500">
+              Legajo digital del estudiante
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <Link
+            href="/alumnos"
+            className="bg-slate-600 hover:bg-slate-700 text-white px-4 py-2
+              rounded-lg font-semibold"
+          >
+            Volver
+          </Link>
 
-          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition">
-            <h2 className="font-bold text-lg mb-4">
-              Alumno
-            </h2>
+        </div>
 
+          <h1 className="text-4xl font-bold text-slate-900 mb-3">
+            {alumno.apellido}, {alumno.nombre}
+          </h1>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-5">
+
+            <Link
+              href={`/alumnos/${id}/trayectorias`}
+              className="bg-emerald-600 text-white text-center py-2 rounded-xl font-semibold"
+            >
+              Trayectoria Educativa
+            </Link>
+
+            <Link
+              href={`/alumnos/${id}/intervenciones/nueva`}
+              className="bg-indigo-600 text-white text-center py-2 rounded-xl font-semibold"
+            >
+              Nueva Intervención
+            </Link>
+
+            <Link
+              href={`/valoraciones/alumno/${id}`}
+              className="bg-blue-600 text-white text-center py-2 rounded-xl font-semibold"
+            >
+              Valoraciones
+            </Link>
+
+            <Link
+              href={`/calificaciones/alumno/${id}`}
+              className="bg-amber-600 text-white text-center py-2 rounded-xl font-semibold"
+            >
+              Calificaciones
+            </Link>
+
+          </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-7">
+          
+
+          <div className="bg-white border border-slate-200 rounded-2xl p-3 shadow-sm hover:shadow-md transition">
+            
             <p><b>DNI:</b> {alumno.dni}</p>
             <p><b>Curso:</b> {alumno.curso}</p>
             <p><b>Teléfono:</b> {alumno.telefono}</p>
@@ -131,8 +177,8 @@ const promedio =
             <p><b>Dirección:</b> {alumno.direccion}</p>
           </div>
 
-          <div className="bg-white rounded-xl shadow p-4">
-            <h2 className="font-bold text-lg mb-4">
+          <div className="bg-white rounded-xl shadow p-3">
+            <h2 className="font-bold text-lg mb-2">
               Tutor Responsable
             </h2>
 
@@ -160,7 +206,7 @@ const promedio =
             </div>
 
         </div>
-        <div className="mt-8 grid md:grid-cols-4 gap-4">
+        <div className="mt-3 grid md:grid-cols-5 gap-4">
 
   <div className="bg-white rounded-2xl p-5 shadow">
     <h3 className="text-slate-500 text-sm">
@@ -183,11 +229,21 @@ const promedio =
   </div>
 
   <div className="bg-white rounded-2xl p-5 shadow">
+  <h3 className="text-slate-500 text-sm">
+    TEP
+  </h3>
+
+  <p className="text-3xl font-bold text-blue-500">
+    {tep}
+  </p>
+</div>
+
+  <div className="bg-white rounded-2xl p-5 shadow">
     <h3 className="text-slate-500 text-sm">
       TED
     </h3>
 
-    <p className="text-3xl font-bold text-amber-600">
+    <p className="text-3xl font-bold text-red-600">
       {ted}
     </p>
   </div>
@@ -201,10 +257,11 @@ const promedio =
       {promedio}
     </p>
   </div>
+  
 
 </div>
 
-     <div className="mt-8 bg-white border border-slate-200 rounded-2xl shadow-sm">
+     <div className="mt-5 bg-white border border-slate-200 rounded-2xl shadow-sm">
 
   <div className="flex justify-between items-center p-4 border-b border-slate-200">
 
@@ -267,6 +324,51 @@ const promedio =
           )}
         </div>
         </div>
+
+        <div className="mt-8 bg-white rounded-2xl p-6 shadow">
+
+  <h2 className="text-xl font-bold mb-6">
+    Cronología del Alumno
+  </h2>
+
+  {timeline.length === 0 ? (
+
+    <p className="text-slate-500">
+      No existen registros.
+    </p>
+
+  ) : (
+
+    <div className="space-y-4">
+
+      {timeline.slice(0, 20).map((item, index) => (
+
+        <div
+          key={index}
+          className="border-l-4 border-slate-400 pl-4 py-2"
+        >
+
+          <p className="text-sm text-slate-500">
+            {item.fecha}
+          </p>
+
+          <p className="font-semibold">
+            {item.tipo}
+          </p>
+
+          <p className="text-slate-700">
+            {item.descripcion}
+          </p>
+
+        </div>
+
+      ))}
+
+    </div>
+
+  )}
+
+</div>
 
       </div>
     </div>

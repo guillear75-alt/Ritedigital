@@ -3,16 +3,40 @@ import Link from "next/link";
 
 export default async function CursoDetalle({
   params,
-  searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ materia?: string }>;
 }) {
-  const { id } = await params;
-const { materia } = await searchParams;
 
-const cursoId = Number(id);
-const materiaId = Number(materia);
+  const { id } = await params;
+
+  const cursoId = Number(id);
+
+  const { count: totalAlumnos } = await supabase
+  .from("alumno_curso")
+  .select("*", { count: "exact", head: true })
+  .eq("curso_id", cursoId);
+
+const { data: asignaciones } = await supabase
+  .from("docente_curso_materia")
+  .select(`
+    id,
+    docentes (
+      id,
+      apellido,
+      nombre
+    ),
+    materias (
+      id,
+      nombre
+    )
+  `)
+  .eq("curso_id", cursoId);
+
+const totalMaterias = asignaciones?.length || 0;
+
+const totalDocentes = new Set(
+  asignaciones?.map((a: any) => a.docentes?.id)
+).size;
 
   const { data: curso } = await supabase
     .from("cursos")
@@ -20,112 +44,154 @@ const materiaId = Number(materia);
     .eq("id", cursoId)
     .single();
 
-  const { data: relaciones } = await supabase
-    .from("alumno_curso")
-    .select("alumno_id")
-    .eq("curso_id", cursoId)
+  
+  const { data: materiasCurso } = await supabase
+    .from("docente_curso_materia")
+    .select(`
+      id,
+      docentes (
+        id,
+        apellido,
+        nombre
+      ),
+      materias (
+        id,
+        nombre
+      )
+    `)
+    .eq("curso_id", cursoId);
 
-  const { data: materiaData } = await supabase
-    .from("materias")
-    .select("*")
-    .eq("id", materiaId)
-    .single();
+  
+  return (
+    <div className="min-h-screen bg-slate-50 p-8">
 
-  const alumnoIds =
-    relaciones?.map((r) => r.alumno_id) || [];
+      <div className="max-w-6xl mx-auto">
 
-  let alumnos: any[] = [];
+        <div className="flex justify-between items-center mb-8">
 
-if (alumnoIds.length > 0) {
-  const { data } = await supabase
-    .from("alumnos")
-    .select("*")
-    .in("id", alumnoIds)
-    .order("apellido");
+          <div>
+            <h1 className="text-4xl font-bold">
+              {curso?.nombre}
+            </h1>
 
-  alumnos = data || [];
-}
+            <p className="text-slate-500 mt-2">
+              Materias y docentes asignados al curso
+            </p>
+          </div>
 
- return (
-  <div className="min-h-screen bg-slate-50 p-8">
-    <div className="max-w-5xl mx-auto">
+          <Link
+            href="/cursos"
+            className="bg-slate-600 text-white px-4 py-2 rounded-lg"
+          >
+            Volver
+          </Link>
 
-      <Link
-        href="/cursos"
-        className="text-slate-500 hover:text-slate-800"
-      >
-        ← Volver a Cursos
-      </Link>
+        </div>
+      
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-5 mb-5">
 
-      <div className="mt-4 mb-8">
-        <h1 className="text-4xl font-bold text-slate-900">
-          {curso?.nombre}
-        </h1>
-
-        <p className="text-lg text-blue-600 mt-2">
-          Materia: {materiaData?.nombre}
-        </p>
-
-        <p className="text-slate-500 mt-2">
-          {alumnos.length} alumnos registrados
-        </p>
-      </div>
-
-      {alumnos.length === 0 ? (
-        <div className="bg-white rounded-2xl p-8 text-center shadow-sm">
-          <p className="text-slate-500">
-            No hay alumnos en este curso.
+        <div className="bg-white text-center rounded-xl p-4 shadow">
+          <p className="text-slate-500">Alumnos</p>
+          <p className="text-3xl font-bold">
+            {totalAlumnos ?? 0}
           </p>
         </div>
-      ) : (
-        <div className="space-y-3">
-          {alumnos.map((alumno) => (
-            <div
-            key={alumno.id}
-            className="
-              bg-white
-              rounded-xl
-              border
-              border-slate-200
-              px-3
-              py-2
-              flex
-              justify-between
-              items-center
-              hover:shadow-sm
-              transition
-            "
+
+        <div className="bg-white text-center rounded-xl p-4 shadow">
+          <p className="text-slate-500">Materias</p>
+          <p className="text-3xl font-bold">
+            {totalMaterias}
+          </p>
+        </div>
+
+        <div className="bg-white text-center rounded-xl p-4 shadow">
+          <p className="text-slate-500">Docentes</p>
+          <p className="text-3xl font-bold">
+            {totalDocentes}
+          </p>
+        </div>
+
+        
+
+        <Link
+          href={`/alumnos?curso=${curso?.nombre}`}
+          className="bg-blue-600 hover:bg-blue-700 text-white rounded-2xl
+           p-5 text-center font-bold shadow"
+        >
+          Ver Alumnos
+        </Link>
+
+        <Link
+          href={`/docentes?curso=${cursoId}`}
+          className="bg-slate-700 hover:bg-slate-800 text-white rounded-2xl
+            p-5 text-center font-bold shadow"
+        >
+            Ver Plantel
+          </Link>
+
+          <Link
+            href={`/reportes/curso/${cursoId}`}
+            className="bg-green-600 hover:bg-green-700 text-white rounded-2xl
+              p-5 text-center font-bold shadow"
           >
-              <div>
-              <h2 className="font-semibold text-slate-900">
-                {alumno.apellido}, {alumno.nombre}
+            Ver Reportes
+          </Link>
+
+
+          </div>
+          
+
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+          {materiasCurso?.map((item: any) => (
+
+            <div
+              key={item.id}
+              className="
+                bg-white
+                rounded-2xl
+                shadow
+                border
+                border-slate-200
+                p-6
+              "
+            >
+
+              <h2 className="text-xl font-bold text-slate-900">
+                {item.materias?.nombre}
               </h2>
 
-              <p className="text-xs text-slate-500">
-                DNI {alumno.dni}
+              <p className="text-slate-600 mt-3">
+                {item.docentes?.nombre} {item.docentes?.apellido}
               </p>
+
+              <div className="mt-6">
+
+                <Link
+                  href={`/reportes/curso/${cursoId}?materia=${item.materias?.id}`}
+                  className="
+                    block
+                    text-center
+                    bg-blue-600
+                    hover:bg-blue-700
+                    text-white
+                    py-2
+                    rounded-lg
+                  "
+                >
+                  Ver Alumnos
+                </Link>
+
+              </div>
+
             </div>
 
-              <Link
-                href={`/valoraciones/alumno/${alumno.id}?materia=${materiaId}`}
-                className="
-                  bg-slate-900
-                  hover:bg-slate-700
-                  text-white
-                  px-3
-                  py-1.5
-                  rounded-lg
-                  text-sm
-                  transition
-                "
-              >
-                Ver ficha
-              </Link>
-            </div>
           ))}
+
         </div>
-      )}
+
+      </div>
+
     </div>
-  </div>
-);
-      }
+  );
+}
