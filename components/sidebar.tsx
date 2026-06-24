@@ -70,8 +70,8 @@ export default function Sidebar() {
       { href: "/dashboard/directivo/valoraciones", label: "Valoraciones" },
       { href: "/dashboard/directivo/calificaciones", label: "Calificaciones" },
       { href: "/dashboard/directivo/asistencias", label: "Asistencias" },
-      { href: "/reportes", label: "Reportes" },
-      { href: "/alertas", label: "Alertas" },
+      { href: "/dashboard/directivo/reportes", label: "Reportes" },
+      { href: "/dashboard/directivo/alertas", label: "Alertas" },
     ],
 
     administrador: [

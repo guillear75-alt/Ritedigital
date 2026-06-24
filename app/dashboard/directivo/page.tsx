@@ -1,5 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import ProteccionRol from "@/components/ProteccionRol";
+import Link from "next/link";
 
 export default async function DashboardDirectivoPage() {
 
@@ -109,6 +110,26 @@ const { data: ultimasIntervenciones } = await supabase
   .order("fecha", { ascending: false })
   .limit(3);
 
+const estadoValoraciones =
+  ted === 0
+    ? "🟢 Sin trayectorias TED"
+    : `🔴 ${ted} trayectorias TED detectadas`;
+
+const estadoAsistencia =
+  (ausentes ?? 0) === 0
+    ? "🟢 Sin ausencias registradas"
+    : `🟡 ${ausentes} ausencias registradas`;
+
+const estadoIntervenciones =
+  (intervenciones ?? 0) === 0
+    ? "🟢 Sin intervenciones activas"
+    : `🔴 ${intervenciones} intervenciones activas`;
+
+const estadoPedagogico =
+  (tep ?? 0) === 0
+    ? "🟢 Sin trayectorias en proceso"
+    : `🟡 ${tep} trayectorias TEP`;
+
 return(
     <div className="p-5">
 
@@ -156,7 +177,10 @@ return(
     <p className="text-5xl font-bold text-white mt-2">
       {alertasActivas}
     </p>
+    
   </div>
+
+  
 
 </div>
 
@@ -196,7 +220,9 @@ return(
       <span>6° Economía</span>
       <span>{sexto}</span>
     </div>
+    
   </div>
+  
 
   <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
     <h2 className="text-xl font-semibold text-white mb-4">
@@ -224,70 +250,88 @@ return(
     </div>
   </div>
 
-  <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-    <h2 className="text-xl font-semibold text-white mb-4">
-      Alertas Institucionales
-    </h2>
-
-    <div className="space-y-3 text-slate-300">
-
-  <div className="flex justify-between">
-    <span>Ausentes</span>
-    <span className="font-semibold text-white">
-      {ausentes ?? 0}
-    </span>
-  </div>
-
-  <div className="flex justify-between">
-    <span>TED</span>
-    <span className="font-semibold text-white">
-      {ted ?? 0}
-    </span>
-  </div>
-
-  <div className="flex justify-between">
-    <span>Intervenciones RITE</span>
-    <span className="font-semibold text-white">
-      {intervenciones ?? 0}
-    </span>
-  </div>
+  <Link
+  href="/dashboard/directivo/alertas"
+  className="
+    bg-slate-900
+    border
+    border-slate-800
+    rounded-2xl
+    p-6
+    block
+    hover:border-red-500
+    hover:shadow-lg
+    transition
+  "
+>
+  <h2 className="text-xl font-semibold text-white mb-4">
+    Alertas Institucionales
+  </h2>
 
 
+  <div className="space-y-3 text-slate-300">
+
+    <div className="flex justify-between">
+      <span>Ausentes</span>
+      <span className="font-semibold text-white">
+        {ausentes ?? 0}
+      </span>
     </div>
+
+    <div className="flex justify-between">
+      <span>TED</span>
+      <span className="font-semibold text-white">
+        {ted ?? 0}
+      </span>
+    </div>
+
+    <div className="flex justify-between">
+      <span>Intervenciones RITE</span>
+      <span className="font-semibold text-white">
+        {intervenciones ?? 0}
+      </span>
+    </div>
+
+    <div className="pt-3 text-red-400 font-bold">
+      Ver alertas 
+    </div>
+
   </div>
 
+</Link>
 </div>
 
 <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-  <h2 className="text-2xl text-white font-bold mb-3">
-  Actividad Institucional Reciente
+
+  <h2 className="text-2xl text-white font-bold mb-5">
+    Estado Institucional
   </h2>
 
-<div className="space-y-2 text-white">
+  <div className="flex gap-4">
 
-  {ultimasValoraciones?.map((v, i) => (
-    <div key={`v-${i}`}>
-      • Valoración {v.valoracion} registrada el {v.fecha}
+    <div className="bg-slate-800 rounded-lg p-3 text-white">
+      {estadoAsistencia}
     </div>
-  ))}
 
-  {ultimasAsistencias?.map((a, i) => (
-    <div key={`a-${i}`}>
-      • Asistencia registrada ({a.estado}) el {a.fecha}
+    <div className="bg-slate-800 rounded-lg p-3 text-white">
+      {estadoValoraciones}
     </div>
-  ))}
 
-  {ultimasIntervenciones?.map((i, idx) => (
-    <div key={`i-${idx}`}>
-      • Intervención RITE registrada el {i.fecha}
+    <div className="bg-slate-800 rounded-lg p-3 text-white">
+      {estadoPedagogico}
     </div>
-  ))}
+
+    <div className="bg-slate-800 rounded-lg p-3 text-white">
+      {estadoIntervenciones}
+    </div>
+
+  </div>
 
 </div>
 
 
       </div>
 
-    </div>
+    
   );
 }
