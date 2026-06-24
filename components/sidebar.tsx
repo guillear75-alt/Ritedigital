@@ -69,7 +69,7 @@ export default function Sidebar() {
       { href: "/matriculas", label: "Matrículas" },
       { href: "/dashboard/directivo/valoraciones", label: "Valoraciones" },
       { href: "/dashboard/directivo/calificaciones", label: "Calificaciones" },
-      { href: "/asistencias", label: "Asistencias" },
+      { href: "/dashboard/directivo/asistencias", label: "Asistencias" },
       { href: "/reportes", label: "Reportes" },
       { href: "/alertas", label: "Alertas" },
     ],

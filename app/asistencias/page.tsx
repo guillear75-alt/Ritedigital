@@ -204,33 +204,35 @@ return (
   )}
 
   <div className="bg-white rounded-lg shadow overflow-hidden">
-    <table className="w-full">
-      <thead className="bg-slate-100">
-        <tr>
-          <th className="text-left p-3">
-            Alumno
-          </th>
 
-          <th className="text-left p-3">
-            Estado
-          </th>
-        </tr>
-      </thead>
+  <div className="bg-white rounded-xl shadow p-4">
 
-      <tbody>
-       <div className="bg-white rounded-xl shadow p-4">
   <div className="space-y-2">
+
     {alumnos.map((alumno) => (
+
       <div
         key={alumno.id}
-        className=" border rounded-lg px-3 py-1.5 flex justify-between
-items-center"
+        className="
+          border border-slate-200
+          rounded-lg
+          px-4
+          py-3
+          flex
+          justify-between
+          items-center
+          hover:bg-slate-50
+        "
       >
+
         <div>
-          <p className="font-medium">
+          <p className="font-semibold">
             {alumno.apellido}, {alumno.nombre}
           </p>
-          
+
+          <p className="text-sm text-slate-500">
+            {alumno.curso}
+          </p>
         </div>
 
         <select
@@ -244,27 +246,44 @@ items-center"
               e.target.value
             )
           }
-          className="border rounded-lg px-1 py-1"
+          className="
+            border
+            rounded-lg
+            px-3
+            py-2
+          "
         >
           <option value="Presente">
             Presente
           </option>
+
           <option value="Ausente">
             Ausente
           </option>
+
           <option value="Tarde">
             Tarde
           </option>
+
           <option value="Justificada">
             Justificada
           </option>
         </select>
+
       </div>
+
     ))}
+
+    {alumnos.length === 0 && curso && (
+      <div className="text-center py-8 text-slate-500">
+        No hay alumnos matriculados en este curso.
+      </div>
+    )}
+
   </div>
+
 </div>
-      </tbody>
-    </table>
+
   </div>
 
   {curso && (
