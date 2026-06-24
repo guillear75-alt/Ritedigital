@@ -45,19 +45,38 @@ export default async function AsignacionesPage() {
   )
 );
 
+const cursosAgrupados = asignaciones?.reduce(
+  (acc: any, item: any) => {
+
+    const curso =
+      (item.cursos as any)?.nombre ||
+      "Sin curso";
+
+    if (!acc[curso]) {
+      acc[curso] = [];
+    }
+
+    acc[curso].push(item);
+
+    return acc;
+  },
+  {}
+);
+
     
 
   return (
-    <div className="p-8">
+    <div className="p-5">
 
       <Link
-        href="/dashboard"
-        className="text-blue-600"
-      >
-        ← Volver al Dashboard
-      </Link>
+  href="/dashboard/directivo"
+  className="inline-flex items-center bg-slate-600 text-white px-4 py-2
+    rounded-lg font-semibold transition"
+>
+  Dashboard Directivo
+</Link>
 
-      <h1 className="text-3xl font-bold mt-4 mb-6">
+      <h1 className="text-3xl font-bold mt-4 mb-5">
         Asignaciones Docentes
       </h1>
 
@@ -66,140 +85,201 @@ export default async function AsignacionesPage() {
         className="bg-white rounded-xl shadow p-6 space-y-4"
       >
 
-        <div>
-          <label>Docente</label>
+        <div className="grid md:grid-cols-4 gap-3">
 
-          <select
-            name="docente_id"
-            required
-            className="w-full border rounded p-2"
-          >
-            <option value="">
-              Seleccionar docente
-            </option>
+  <div>
+    <label>Docente</label>
 
-            {docentes?.map((docente) => (
-              <option
-                key={docente.id}
-                value={docente.id}
-              >
-                {docente.apellido}, {docente.nombre}
-              </option>
-            ))}
-          </select>
-        </div>
+    <select
+      name="docente_id"
+      required
+      className="w-full border rounded p-2"
+    >
+      <option value="">
+        Seleccionar docente
+      </option>
 
-        <div>
-          <label>Curso</label>
-
-          <select
-            name="curso_id"
-            required
-            className="w-full border rounded p-2"
-          >
-            <option value="">
-              Seleccionar curso
-            </option>
-
-            {cursos?.map((curso) => (
-              <option
-                key={curso.id}
-                value={curso.id}
-              >
-                {curso.nombre}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label>Materia</label>
-
-          <select
-            name="materia_id"
-            required
-            className="w-full border rounded p-2"
-          >
-            <option value="">
-              Seleccionar materia
-            </option>
-
-            {materias?.map((materia) => (
-              <option
-                key={materia.id}
-                value={materia.id}
-              >
-                {materia.nombre} ({materia.anio}°)
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label>Ciclo Lectivo</label>
-
-          <input
-            type="number"
-            name="ciclo_lectivo"
-            defaultValue={2026}
-            className="w-full border rounded p-2"
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded"
+      {docentes?.map((docente) => (
+        <option
+          key={docente.id}
+          value={docente.id}
         >
-          Asignar
-        </button>
+          {docente.apellido}, {docente.nombre}
+        </option>
+      ))}
+    </select>
+  </div>
+
+  <div>
+    <label>Curso</label>
+
+    <select
+      name="curso_id"
+      required
+      className="w-full border rounded p-2"
+    >
+      <option value="">
+        Seleccionar curso
+      </option>
+
+      {cursos?.map((curso) => (
+        <option
+          key={curso.id}
+          value={curso.id}
+        >
+          {curso.nombre}
+        </option>
+      ))}
+    </select>
+  </div>
+
+  <div>
+    <label>Materia</label>
+
+    <select
+      name="materia_id"
+      required
+      className="w-full border rounded p-2"
+    >
+      <option value="">
+        Seleccionar materia
+      </option>
+
+      {materias?.map((materia) => (
+        <option
+          key={materia.id}
+          value={materia.id}
+        >
+          {materia.nombre} ({materia.anio}°)
+        </option>
+      ))}
+    </select>
+  </div>
+
+  <div>
+    <label>Ciclo Lectivo</label>
+
+    <input
+      type="number"
+      name="ciclo_lectivo"
+      defaultValue={2026}
+      className="w-full border rounded p-2"
+    />
+  </div>
+
+</div>
+
+<div className="flex justify-end mt-3">
+
+  <button
+    type="submit"
+    className="bg-blue-600 hover:bg-blue-700 text-white
+      px-4 py-2 rounded-lg font-semibold"
+  >
+    Asignar
+  </button>
+
+</div>
 
       </form>
 
       <div className="mt-10">
-        <h2 className="text-2xl font-bold mb-4">
-          Asignaciones Registradas
-        </h2>
+        <h1 className="text-4xl font-bold mt-2 mb-1">
+  Asignaciones Docentes
+</h1>
 
-        <div className="overflow-x-auto bg-white rounded-xl shadow">
-          <table className="w-full">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="p-3 text-left">Docente</th>
-                <th className="p-3 text-left">Curso</th>
-                <th className="p-3 text-left">Materia</th>
-                <th className="p-3 text-left">Ciclo Lectivo</th>
-              </tr>
-            </thead>
+<p className="text-slate-500 mb-6">
+  Gestión de docentes, cursos y materias.
+</p>
 
-            <tbody>
-              {asignaciones?.map((asignacion) => (
-                <tr
-                  key={asignacion.id}
-                  className="border-t"
-                >
-                  <td className="p-3">
-                  {asignacion.docentes
-                    ? `${(asignacion.docentes as any).apellido}, ${(asignacion.docentes as any).nombre}`
-                    : "Sin docente"}
-                </td>
+        <div className="space-y-10">
 
-                  <td className="p-3">
-                  {asignacion.cursos
-                    ? (asignacion.cursos as any).nombre
-                    : "Sin curso"}
-                </td>
+  {Object.entries(
+    cursosAgrupados || {}
+  ).map(([curso, items]: any) => (
 
-                <td className="p-3">
-                  {asignacion.materias
-                    ? (asignacion.materias as any).nombre
-                    : "Sin materia"}
-                </td>
-                </tr>
-              ))}
-            </tbody>
+    <div key={curso}>
 
-          </table>
-        </div>
+      <h3 className="text-2xl font-bold mb-4">
+        {curso}
+      </h3>
+
+      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+
+        {items.map((item: any) => (
+
+          <div
+            key={item.id}
+            className="
+              bg-white
+              rounded-2xl
+              shadow
+              border
+              border-slate-200
+              p-5
+            "
+          >
+
+            <p className="text-sm text-slate-500">
+              Materia
+            </p>
+
+            <h4 className="text-lg font-bold mb-3">
+              {item.materias?.nombre}
+            </h4>
+
+            <p className="text-sm text-slate-500">
+              Docente
+            </p>
+
+            <p className="font-semibold mb-5">
+              {item.docentes?.apellido},{" "}
+              {item.docentes?.nombre}
+            </p>
+
+            <div className="flex gap-2">
+
+              <Link
+                href={`/docentes/${item.docentes?.id}`}
+                className="
+                  flex-1
+                  bg-slate-700
+                  text-white
+                  text-center
+                  py-2
+                  rounded-lg
+                "
+              >
+                Ficha
+              </Link>
+
+              <Link
+                href={`/asignaciones/${item.id}/editar`}
+                className="
+                  flex-1
+                  bg-amber-600
+                  text-white
+                  text-center
+                  py-2
+                  rounded-lg
+                "
+              >
+                Reemplazar
+              </Link>
+
+            </div>
+
+          </div>
+
+        ))}
+
+      </div>
+
+    </div>
+
+  ))}
+
+</div>
       </div>
 
     </div>

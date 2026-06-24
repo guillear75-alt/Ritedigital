@@ -29,29 +29,67 @@ export default async function MatriculasPage() {
     `)
     .order("id", { ascending: false });
 
+    const totalAlumnos = alumnos?.length || 0;
+const totalCursos = cursos?.length || 0;
+const totalMatriculas = matriculas?.length || 0;
+
+const matriculasPorCurso = matriculas?.reduce(
+  (acc: any, item: any) => {
+    const curso =
+      (item.cursos as any)?.nombre ||
+      "Sin curso";
+
+    if (!acc[curso]) {
+      acc[curso] = [];
+    }
+
+    acc[curso].push(item);
+
+    return acc;
+  },
+  {}
+);
+
   return (
-    <div className="p-8">
+    <div className="p-5">
+
+  <div className="flex justify-between items-center mb-5">
+
+  <div>
+    <h1 className="text-4xl font-bold">
+      Matrículas
+    </h1>
+
+    <p className="text-slate-500">
+      Gestión de inscripciones y cursos.
+    </p>
+  </div>
 
   <Link
-    href="/dashboard"
-    className="text-blue-600 hover:underline"
+    href="/dashboard/directivo"
+    className="
+      bg-slate-600
+      hover:bg-slate-700
+      text-white font-bold
+      px-4
+      py-2
+      rounded-lg
+    "
   >
-    ← Volver al Dashboard
+    Volver
   </Link>
 
-  <h1 className="text-3xl font-bold mb-6">
-    Matrículas
-  </h1>
+</div>
 
       <form
         action={crearMatricula}
-        className="bg-white rounded-xl shadow p-6 space-y-4"
+        className="bg-white rounded-xl shadow p-6"
       >
-
+<div className="grid md:grid-cols-3 gap-4">
         <select
           name="alumno_id"
           required
-          className="w-full border rounded p-2"
+          className="w-full border rounded p-1"
         >
           <option value="">
             Seleccionar alumno
@@ -67,10 +105,11 @@ export default async function MatriculasPage() {
           ))}
         </select>
 
+
         <select
           name="curso_id"
           required
-          className="w-full border rounded p-2"
+          className="w-full border rounded p-1"
         >
           <option value="">
             Seleccionar curso
@@ -90,54 +129,102 @@ export default async function MatriculasPage() {
           type="number"
           name="ciclo_lectivo"
           defaultValue={2026}
-          className="w-full border rounded p-2"
+          className="w-full border rounded p-1"
         />
-
+      </div>
         <button
           type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded"
+          className="bg-blue-600 text-white font-bold px-4 py-2 rounded-xl mt-3"
         >
           Guardar Matrícula
         </button>
 
       </form>
 
-      <div className="mt-8 bg-white rounded-xl shadow overflow-hidden">
+      <div className="grid md:grid-cols-3 gap-6 mb-5 mt-3">
 
-        <table className="w-full">
+  <div className="bg-white rounded-xl p-5 shadow">
+    <p className="text-slate-500 text-sm">
+      Alumnos
+    </p>
 
-          <thead className="bg-slate-100">
-            <tr>
-              <th className="p-3 text-left">Alumno</th>
-              <th className="p-3 text-left">Curso</th>
-              <th className="p-3 text-left">Ciclo</th>
-            </tr>
-          </thead>
+    <p className="text-3xl font-bold">
+      {totalAlumnos}
+    </p>
+  </div>
 
-          <tbody>
+  <div className="bg-white rounded-xl p-5 shadow">
+    <p className="text-slate-500 text-sm">
+      Cursos
+    </p>
 
-            {matriculas?.map((m) => (
-              <tr
-                key={m.id}
-                className="border-t"
-              >
-                <td className="p-3">
-                  {m.alumnos?.[0]?.apellido}, {m.alumnos?.[0]?.nombre}
-                </td>
+    <p className="text-3xl font-bold">
+      {totalCursos}
+    </p>
+  </div>
 
-                <td className="p-3">
-                  {m.cursos?.[0]?.nombre}
-                </td>
+  <div className="bg-white rounded-xl p-5 shadow">
+    <p className="text-slate-500 text-sm">
+      Matrículas
+    </p>
 
-                <td className="p-3">
-                  {m.ciclo_lectivo}
-                </td>
-              </tr>
-            ))}
+    <p className="text-3xl font-bold">
+      {totalMatriculas}
+    </p>
+  </div>
 
-          </tbody>
+</div>
 
-        </table>
+      <div className="space-y-10 mt-8">
+
+  {Object.entries(
+    matriculasPorCurso || {}
+  ).map(([curso, items]: any) => (
+
+    <div key={curso}>
+
+      <h2 className="text-2xl font-bold mb-4">
+        {curso}
+      </h2>
+
+      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+
+        {items.map((m: any) => (
+
+          <div
+            key={m.id}
+            className="
+              bg-white
+              rounded-xl
+              shadow
+              border
+              border-slate-200
+              p-5
+            "
+          >
+
+            <h3 className="font-bold text-lg">
+              {(m.alumnos as any)?.apellido}
+            </h3>
+
+            <p className="text-slate-600">
+              {(m.alumnos as any)?.nombre}
+            </p>
+
+            <p className="text-sm text-slate-500 mt-3">
+              Ciclo Lectivo: {m.ciclo_lectivo}
+            </p>
+
+          </div>
+
+        ))}
+
+      </div>
+
+    </div>
+
+  ))}
+
 
       </div>
 
