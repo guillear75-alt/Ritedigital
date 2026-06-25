@@ -45,6 +45,8 @@ export default async function AsignacionesPage() {
   )
 );
 
+
+
 const cursosAgrupados = asignaciones?.reduce(
   (acc: any, item: any) => {
 

@@ -23,10 +23,19 @@ export default async function DashboardSecretarioPage() {
     .from("alumno_curso")
     .select("*", { count: "exact", head: true });
 
-  return (
-    <div className="p-8">
+  const { data: ultimosAlumnos } = await supabase
+  .from("alumnos")
+  .select("id, apellido, nombre")
+  .order("id", { ascending: false })
+  .limit(5);
 
-   
+  const { count: sinTelefono } = await supabase
+  .from("alumnos")
+  .select("*", { count: "exact", head: true })
+  .is("telefono", null);
+
+  return (
+    <div className="p-5">
 
       <h1 className="text-4xl font-bold mb-8">
         Dashboard Secretaría
@@ -68,8 +77,83 @@ export default async function DashboardSecretarioPage() {
             {matriculas ?? 0}
           </p>
         </div>
+        
 
       </div>
+      <div className="mt-7">
+  <h2 className="text-2xl font-bold mb-4">
+    Accesos rápidos
+  </h2>
+
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+    <a
+      href="/alumnos/nuevo"
+      className="bg-white font-bold rounded-xl p-4 shadow hover:shadow-lg transition"
+    >
+       Nuevo Alumno
+    </a>
+
+    <a
+      href="/docentes/nuevo"
+      className="bg-white font-bold rounded-xl p-4 shadow hover:shadow-lg transition"
+    >
+       Nuevo Docente
+    </a>
+
+    <a
+      href="/alumnos/importar"
+      className="bg-white  font-bold rounded-xl p-4 shadow hover:shadow-lg transition"
+    >
+       Importar Excel
+    </a>
+
+    <a
+      href="/reportes"
+      className="bg-white font-bold rounded-xl p-4 shadow hover:shadow-lg transition"
+    >
+       Reportes
+    </a>
+
+  </div>
+</div>
+<div className="bg-white rounded-2xl shadow p-6 mt-8">
+  <h2 className="text-xl font-bold mb-4">
+    Últimos alumnos incorporados
+  </h2>
+
+  <div className="space-y-2">
+    {ultimosAlumnos?.map((alumno) => (
+      <div
+        key={alumno.id}
+        className="flex items-center justify-between bg-slate-50 rounded-xl p-3 hover:bg-slate-200 transition"
+      >
+        <div>
+          <p className="font-bold text-slate-800">
+            {alumno.apellido}, {alumno.nombre}
+          </p>
+          <p className="text-sm text-slate-500">
+            ID: {alumno.id}
+          </p>
+        </div>
+
+        <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-sm">
+          Alumno
+        </span>
+      </div>
+    ))}
+  </div>
+</div>
+
+<div className="bg-red-50 border border-red-200 rounded-2xl p-6 mt-8">
+  <h2 className="text-xl font-bold text-red-700 mb-2">
+    Alertas
+  </h2>
+
+  <p>
+    Alumnos sin teléfono registrado: {sinTelefono ?? 0}
+  </p>
+</div>
 
     </div>
   );
