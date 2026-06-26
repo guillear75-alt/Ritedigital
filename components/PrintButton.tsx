@@ -4,9 +4,19 @@ export default function PrintButton() {
   return (
     <button
       onClick={() => window.print()}
-      className="bg-blue-600 text-white px-4 py-2 rounded"
+      className="
+        bg-indigo-600
+        hover:bg-indigo-700
+        text-white
+        px-5
+        py-3
+        rounded-xl
+        font-semibold
+        shadow
+        transition
+      "
     >
-      Imprimir
+      🖨 Imprimir
     </button>
   );
 }

@@ -58,6 +58,7 @@ export default function Sidebar() {
       { href: "/matriculas", label: "Matrículas" },
       { href: "/reportes", label: "Reportes" },
       { href: "/alertas", label: "Alertas" },
+      { href: "/imprimir", label: "Impresiones" },
     ],
 
     directivo: [
@@ -72,6 +73,7 @@ export default function Sidebar() {
       { href: "/dashboard/directivo/asistencias", label: "Asistencias" },
       { href: "/dashboard/directivo/reportes", label: "Reportes" },
       { href: "/dashboard/directivo/alertas", label: "Alertas" },
+      { href: "/imprimir", label: "Impresiones" },
     ],
 
     administrador: [
