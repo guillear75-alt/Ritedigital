@@ -127,6 +127,14 @@ const promedio =
             Volver
           </Link>
 
+          <Link
+  href={`/imprimir/valoraciones/${alumno.id}`}
+  target="_blank"
+  className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-xl"
+>
+  🖨️ Imprimir Valoraciones
+</Link>
+
         </div>
 
           <h1 className="text-4xl font-bold text-slate-900 mb-3">
