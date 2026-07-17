@@ -67,7 +67,9 @@ export default function ValoracionesCursoPage() {
     (alumno) => ({
       alumno_id: alumno.id,
       materia_id: Number(materia),
-      docente_id: 127,
+      docente_id: Number(
+      localStorage.getItem("docente_id")
+    ),
       periodo,
       ciclo_lectivo: 2026,
       valoracion:
@@ -80,13 +82,15 @@ export default function ValoracionesCursoPage() {
     })
   );
 
-  const { error } = await supabase
-    .from("valoraciones")
-    .upsert(registros, {
-      onConflict:
-        "alumno_id,materia_id,periodo,ciclo_lectivo",
-    });
+  const { data, error } = await supabase
+  .from("valoraciones")
+  .upsert(registros, {
+    onConflict:
+      "alumno_id,materia_id,periodo,ciclo_lectivo",
+  });
 
+console.log("DATA:", data);
+console.log("ERROR:", error);
   if (error) {
     console.error(error);
     alert("Error al guardar");

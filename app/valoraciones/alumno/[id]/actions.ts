@@ -36,17 +36,24 @@ export async function guardarValoracion(
 
   const { error } = await supabase
   .from("valoraciones")
-  .update({
-    valoracion,
-    observaciones,
-    fecha: new Date()
-      .toISOString()
-      .split("T")[0],
-  })
-  .eq("alumno_id", alumno_id)
-  .eq("materia_id", materia_id)
-  .eq("periodo", periodo)
-  .eq("ciclo_lectivo", 2026);
+  .upsert(
+    {
+      alumno_id,
+      docente_id,
+      materia_id,
+      periodo,
+      ciclo_lectivo: 2026,
+      valoracion,
+      observaciones,
+      fecha: new Date()
+        .toISOString()
+        .split("T")[0],
+    },
+    {
+      onConflict:
+        "alumno_id,materia_id,periodo,ciclo_lectivo",
+    }
+  );
 
 console.log(error);
 

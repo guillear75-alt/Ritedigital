@@ -116,6 +116,7 @@ console.log({
       <option value="TEA">TEA</option>
       <option value="TEP">TEP</option>
       <option value="TED">TED</option>
+      <option value="NC">No Cursa</option>
     </select>
   </div>
 
