@@ -15,6 +15,7 @@ export default function DashboardDocenteClient() {
   const [tea, setTea] = useState(0);
   const [tep, setTep] = useState(0);
   const [ted, setTed] = useState(0);
+  const [nc, setNc] = useState(0);
 
   const [rango13, setRango13] = useState(0);
   const [rango46, setRango46] = useState(0);
@@ -94,6 +95,12 @@ export default function DashboardDocenteClient() {
           (v) => v.valoracion === "TED"
         ).length || 0
       );
+
+      setNc(
+        valoracionesData?.filter(
+            (v) => v.valoracion === "NC"
+        ).length || 0
+        );
 
       const { data: notasData } =
         await supabase
@@ -288,6 +295,25 @@ export default function DashboardDocenteClient() {
                   }}
                 />
               </div>
+            </div>
+            <div>
+            <div className="flex justify-between mb-1">
+                <span>NC</span>
+                <span>{nc}</span>
+            </div>
+
+            <div className="w-full bg-slate-200 rounded-full h-3">
+                <div
+                className="bg-slate-500 h-4 rounded-full"
+                style={{
+                    width: `${
+                    totalValoraciones + nc > 0
+                        ? (nc / (totalValoraciones + nc)) * 100
+                        : 0
+                    }%`,
+                }}
+                />
+            </div>
             </div>
 
           </div>
