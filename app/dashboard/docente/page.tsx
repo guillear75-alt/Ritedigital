@@ -2,12 +2,9 @@ import { supabase } from "@/lib/supabase";
 import ProteccionRol from "@/components/ProteccionRol";
 import GraficoCalificaciones from "@/components/GraficoCalificaciones";
 
-
-
 export default async function DashboardDocentePage() {
 
-  // TEMPORAL PARA PROBAR LAURA
- 
+  const docenteId = 155;
 
   const { data: cursosDocente } = await supabase
     .from("docente_curso_materia")
