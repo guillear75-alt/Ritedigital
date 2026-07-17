@@ -2,7 +2,8 @@ import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 
 export default async function MisCursosPage() {
-  
+
+  const docenteId = 155;
 
   const { data } = await supabase
     .from("docente_curso_materia")
@@ -20,7 +21,7 @@ export default async function MisCursosPage() {
     .eq("docente_id", docenteId)
     .eq("ciclo_lectivo", 2026)
     .order("curso_id");
-
+    
   return (
     <div className="p-8">
 

@@ -31,6 +31,8 @@ export default function LoginRolPage() {
     return;
   }
 
+  console.log("USUARIO LOGIN:", usuario);
+
   localStorage.setItem(
     "rol",
     rol
