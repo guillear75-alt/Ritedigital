@@ -50,16 +50,25 @@ export default function Sidebar() {
     ],
 
     secretario: [
-      { href: "/dashboard/secretario", label: "Dashboard" },
-      { href: "/alumnos", label: "Alumnos" },
-      { href: "/docentes", label: "Docentes" },
-      { href: "/cursos", label: "Cursos" },
-      { href: "/materias", label: "Materias" },
-      { href: "/matriculas", label: "Matrículas" },
-      { href: "/reportes", label: "Reportes" },
-      { href: "/alertas", label: "Alertas" },
-      { href: "/imprimir", label: "Impresiones" },
-    ],
+  { href: "/dashboard/secretario", label: "Dashboard Secretaría" },
+  { href: "/dashboard/directivo", label: "Dashboard Dirección" },
+  
+
+  { href: "/alumnos", label: "Alumnos" },
+  { href: "/docentes", label: "Docentes" },
+  { href: "/cursos", label: "Cursos" },
+  { href: "/materias", label: "Materias" },
+  { href: "/asignaciones", label: "Asignaciones" },
+  { href: "/matriculas", label: "Matrículas" },
+
+  { href: "/dashboard/directivo/valoraciones", label: "Valoraciones" },
+  { href: "/dashboard/directivo/calificaciones", label: "Calificaciones" },
+  { href: "/dashboard/directivo/asistencias", label: "Asistencias" },
+  { href: "/dashboard/directivo/reportes", label: "Reportes" },
+  { href: "/dashboard/directivo/alertas", label: "Alertas" },
+
+  { href: "/imprimir", label: "Impresiones" },
+],
 
     directivo: [
       { href: "/dashboard/directivo", label: "Dashboard" },

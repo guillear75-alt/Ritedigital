@@ -3,17 +3,22 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+
 export default function ProteccionRol({
   permitido,
 }: {
-  permitido: string;
+  permitido: string | string[];
 }) {
   const router = useRouter();
 
   useEffect(() => {
     const rol = localStorage.getItem("rol");
 
-    if (rol !== permitido) {
+    const rolesPermitidos = Array.isArray(permitido)
+      ? permitido
+      : [permitido];
+
+    if (!rol || !rolesPermitidos.includes(rol)) {
       router.push("/");
     }
   }, [permitido, router]);

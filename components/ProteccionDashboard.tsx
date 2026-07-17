@@ -35,10 +35,16 @@ export default function ProteccionDashboard({
         directivo: "directivo",
       };
 
-      if (equivalencias[rol] !== rutaRol) {
-        router.replace(`/dashboard/${equivalencias[rol]}`);
-        return;
-      }
+     const esSecretarioEnDirectivo =
+  rol === "secretario" && rutaRol === "directivo";
+
+if (
+  equivalencias[rol] !== rutaRol &&
+  !esSecretarioEnDirectivo
+) {
+  router.replace(`/dashboard/${equivalencias[rol]}`);
+  return;
+}
     }
 
     setOk(true);
