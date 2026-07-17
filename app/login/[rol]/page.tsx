@@ -14,76 +14,110 @@ export default function LoginRolPage() {
   const [password, setPassword] = useState("");
 
   async function ingresar() {
-    const { data: usuario, error } = await supabase
-      .from("usuarios")
-      .select(`
-        *,
-        usuario_roles (
-          rol_id,
-          roles (
-            nombre
-          )
-        )
-      `)
-      .eq("email", email)
-      .eq("password", password)
-      .single();
+  const { data: usuario, error } = await supabase
+    .from("usuarios")
+    .select("*")
+    .eq("email", email)
+    .eq("password", password)
+    .single();
 
-    if (error || !usuario) {
-      alert("Usuario o contraseña incorrectos");
-      return;
-    }
-
-    if (!usuario.activo) {
-      alert("Usuario inactivo");
-      return;
-    }
-
-    const rolesUsuario =
-      ((usuario as any).usuario_roles || [])
-        .map((ur: any) => ur.roles?.nombre)
-        .filter(Boolean);
-
-    if (!rolesUsuario.includes(rol)) {
-      alert(`Este usuario no posee el perfil ${rol}`);
-      return;
-    }
-
-    localStorage.setItem("rol", rol);
-    localStorage.setItem("usuario_nombre", usuario.nombre);
-    localStorage.setItem("usuario_id", usuario.id);
-
-    if (usuario.primer_acceso) {
-      router.push("/cambiar-password");
-      return;
-    }
-
-    switch (rol) {
-      case "administrador":
-        router.push("/dashboard/admin");
-        break;
-
-      case "docente":
-        router.push("/dashboard/docente");
-        break;
-
-      case "preceptor":
-        router.push("/dashboard/preceptor");
-        break;
-
-      case "secretario":
-        router.push("/dashboard/secretario");
-        break;
-
-      case "directivo":
-        router.push("/dashboard/directivo");
-        break;
-
-      default:
-        router.push("/");
-    }
+  if (error || !usuario) {
+    alert("Usuario o contraseña incorrectos");
+    return;
   }
 
+  if (!usuario.activo) {
+    alert("Usuario inactivo");
+    return;
+  }
+
+  localStorage.setItem(
+    "rol",
+    rol
+  );
+
+  localStorage.setItem(
+    "usuario_nombre",
+    usuario.nombre
+  );
+
+  localStorage.setItem(
+    "usuario_id",
+    usuario.id
+  );
+
+  localStorage.setItem(
+    "docente_id",
+    String(usuario.docente_id || "")
+  );
+
+  if (usuario.primer_acceso) {
+    router.push("/cambiar-password");
+    return;
+  }
+
+
+  const { data: rolesData } = await supabase
+    .from("usuario_roles")
+    .select("rol_id")
+    .eq("usuario_id", usuario.id);
+
+  const rolesMap: Record<number, string> = {
+    1: "directivo",
+    2: "secretario",
+    3: "preceptor",
+    4: "docente",
+    5: "administrador",
+  };
+
+  const rolesUsuario =
+    rolesData?.map(
+      (r) => rolesMap[r.rol_id]
+    ) || [];
+
+  console.log("ROLES:", rolesUsuario);
+
+  if (!rolesUsuario.includes(rol)) {
+    alert(
+      `Este usuario no posee el perfil ${rol}`
+    );
+    return;
+  }
+
+  localStorage.setItem("rol", rol);
+  localStorage.setItem("usuario_nombre", usuario.nombre);
+  localStorage.setItem("usuario_id", usuario.id);
+
+  if (usuario.primer_acceso) {
+    router.push("/cambiar-password");
+    return;
+  }
+
+  switch (rol) {
+    case "administrador":
+      router.push("/dashboard/admin");
+      break;
+
+    case "docente":
+      router.push("/dashboard/docente");
+      break;
+
+    case "preceptor":
+      router.push("/dashboard/preceptor");
+      break;
+
+    case "secretario":
+      router.push("/dashboard/secretario");
+      break;
+
+    case "directivo":
+      router.push("/dashboard/directivo");
+      break;
+
+    default:
+      router.push("/");
+  }
+}
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center p-6">
       <div className="w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden">

@@ -2,7 +2,7 @@ import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 
 export default async function MisCursosPage() {
-  const docenteId = 143; // Inés por ahora
+  
 
   const { data } = await supabase
     .from("docente_curso_materia")

@@ -6,25 +6,36 @@ import GraficoCalificaciones from "@/components/GraficoCalificaciones";
 
 export default async function DashboardDocentePage() {
 
-  const docenteId = 143;
+  // TEMPORAL PARA PROBAR LAURA
+ 
 
   const { data: cursosDocente } = await supabase
     .from("docente_curso_materia")
-    .select("curso_id")
+    .select(`
+      curso_id,
+      materia_id,
+      cursos(nombre),
+      materias(nombre)
+    `)
     .eq("docente_id", docenteId)
     .eq("ciclo_lectivo", 2026);
 
-  const misCursos = new Set(
-    cursosDocente?.map((c) => c.curso_id)
-  ).size;
+  const misCursos =
+    cursosDocente?.length || 0;
 
   const { count: valoraciones } = await supabase
     .from("valoraciones")
-    .select("*", { count: "exact", head: true });
+    .select("*", {
+      count: "exact",
+      head: true,
+    });
 
   const { count: calificaciones } = await supabase
     .from("calificaciones")
-    .select("*", { count: "exact", head: true });
+    .select("*", {
+      count: "exact",
+      head: true,
+    });
 
   const { data: ausentes } = await supabase
     .from("asistencias")
@@ -34,87 +45,73 @@ export default async function DashboardDocentePage() {
   const alertasActivas =
     ausentes?.length || 0;
 
-  const { data: valoracionesData } = await supabase
-  .from("valoraciones")
-  .select("valoracion");
+  const { data: valoracionesData } =
+    await supabase
+      .from("valoraciones")
+      .select("valoracion");
 
-const tea =
-  valoracionesData?.filter(
-    (v) => v.valoracion === "TEA"
-  ).length || 0;
+  const tea =
+    valoracionesData?.filter(
+      (v) => v.valoracion === "TEA"
+    ).length || 0;
 
-const tep =
-  valoracionesData?.filter(
-    (v) => v.valoracion === "TEP"
-  ).length || 0;
+  const tep =
+    valoracionesData?.filter(
+      (v) => v.valoracion === "TEP"
+    ).length || 0;
 
-const ted =
-  valoracionesData?.filter(
-    (v) => v.valoracion === "TED"
-  ).length || 0;
+  const ted =
+    valoracionesData?.filter(
+      (v) => v.valoracion === "TED"
+    ).length || 0;
 
-const { data: notasData } = await supabase
-  .from("calificaciones")
-  .select("nota");
+  const { data: notasData } =
+    await supabase
+      .from("calificaciones")
+      .select("nota");
 
-const rango13 =
-  notasData?.filter(
-    (n) =>
-      Number(n.nota) >= 1 &&
-      Number(n.nota) <= 3
-  ).length || 0;
+  const rango13 =
+    notasData?.filter(
+      (n) =>
+        Number(n.nota) >= 1 &&
+        Number(n.nota) <= 3
+    ).length || 0;
 
-const rango46 =
-  notasData?.filter(
-    (n) =>
-      Number(n.nota) >= 4 &&
-      Number(n.nota) <= 6
-  ).length || 0;
+  const rango46 =
+    notasData?.filter(
+      (n) =>
+        Number(n.nota) >= 4 &&
+        Number(n.nota) <= 6
+    ).length || 0;
 
-const rango710 =
-  notasData?.filter(
-    (n) =>
-      Number(n.nota) >= 7 &&
-      Number(n.nota) <= 10
-  ).length || 0;
+  const rango710 =
+    notasData?.filter(
+      (n) =>
+        Number(n.nota) >= 7 &&
+        Number(n.nota) <= 10
+    ).length || 0;
 
-const totalValoraciones =
-  tea + tep + ted;
+  const totalValoraciones =
+    tea + tep + ted;
 
-const teaPorcentaje =
-  totalValoraciones > 0
-    ? (tea / totalValoraciones) * 100
-    : 0;
+  const teaPorcentaje =
+    totalValoraciones > 0
+      ? (tea / totalValoraciones) * 100
+      : 0;
 
-const tepPorcentaje =
-  totalValoraciones > 0
-    ? (tep / totalValoraciones) * 100
-    : 0;
+  const tepPorcentaje =
+    totalValoraciones > 0
+      ? (tep / totalValoraciones) * 100
+      : 0;
 
-const tedPorcentaje =
-  totalValoraciones > 0
-    ? (ted / totalValoraciones) * 100
-    : 0;
+  const tedPorcentaje =
+    totalValoraciones > 0
+      ? (ted / totalValoraciones) * 100
+      : 0;
 
-const totalNotas =
-  rango13 + rango46 + rango710;
+  
 
-const p13 =
-  totalNotas > 0
-    ? (rango13 / totalNotas) * 100
-    : 0;
-
-const p46 =
-  totalNotas > 0
-    ? (rango46 / totalNotas) * 100
-    : 0;
-
-const p710 =
-  totalNotas > 0
-    ? (rango710 / totalNotas) * 100
-    : 0;
-
-  return (
+  return(
     
   <div className="p-8">
 
@@ -184,17 +181,22 @@ const p710 =
 
         <div className="space-y-3">
 
-          <div className="bg-slate-50 rounded-xl p-3">
-            <p className="font-semibold">
-              4° Economía
-            </p>
+  {cursosDocente?.map((item: any, index: number) => (
+  <div
+    key={index}
+    className="bg-slate-50 rounded-xl p-3"
+  >
+    <p className="font-semibold">
+      {item.cursos?.nombre}
+    </p>
 
-            <p className="text-sm text-slate-500">
-              NTICx
-            </p>
-          </div>
+    <p className="text-sm text-slate-500">
+      {item.materias?.nombre}
+    </p>
+  </div>
+))}
 
-          
+         
         </div>
 
       </div>
@@ -310,6 +312,5 @@ const p710 =
     </div>
 
   </div>
-
-);
-} 
+  );
+}
