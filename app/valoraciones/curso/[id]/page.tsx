@@ -65,11 +65,11 @@ export default async function Page({
     <div className="flex gap-2 mb-3">
 
   <Link
-    href="/reportes/curso"
-    className="bg-slate-600 text-white font-bold px-2 py-2 rounded-xl"
-  >
-    Volver
-  </Link>
+  href="/dashboard/docente"
+  className="bg-slate-600 text-white font-bold px-2 py-2 rounded-xl"
+>
+  Volver
+</Link>
 
   <Link
     href="/reportes"
@@ -161,7 +161,7 @@ export default async function Page({
         </div>
 
         <a
-          href={`/valoraciones/alumno/${alumno.id}?curso=${cursoId}&materia=${materiaId}&docente=143`}
+          href={`/valoraciones/alumno/${alumno.id}?curso=${cursoId}&materia=${materiaId}`}
           className={`
             block text-center py-2 rounded-xl text-white font-bold ${valorado
               ? "bg-amber-800" : "bg-blue-600"}

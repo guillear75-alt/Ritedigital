@@ -41,6 +41,15 @@ export default function MisCursosPage() {
   return (
     <div className="p-8">
 
+      <div className="flex gap-2 mb-6">
+  <Link
+    href="/dashboard/docente"
+    className="bg-slate-700 text-white font-bold px-4 py-2 rounded-xl hover:bg-slate-800"
+  >
+    ← Dashboard
+  </Link>
+</div>
+
       <h1 className="text-3xl font-bold mb-6">
         Mis Cursos
       </h1>

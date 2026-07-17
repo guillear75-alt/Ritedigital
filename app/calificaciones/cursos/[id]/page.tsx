@@ -69,11 +69,11 @@ console.log("CALIFICACIONES:", calificaciones);
     <div className="flex gap-2 mb-6">
 
   <Link
-    href="/reportes/curso"
-    className="bg-slate-600 text-white font-bold px-4 py-2 rounded-xl"
-  >
-    Volver
-  </Link>
+  href="/dashboard/docente"
+  className="bg-slate-600 text-white font-bold px-2 py-2 rounded-xl"
+>
+  Volver
+</Link>
 
   <Link
     href="/reportes"
@@ -196,7 +196,7 @@ console.log("CALIFICACIONES:", calificaciones);
         </div>
 
         <a
-          href={`/calificaciones/alumno/${alumno.id}?curso=${cursoId}&materia=${materiaId}&docente=143`}
+          href={`/calificaciones/alumno/${alumno.id}?curso=${cursoId}&materia=${materiaId}`}
           className={`block text-center py-2 rounded-xl text-white font-bold
             ${
               calificado
