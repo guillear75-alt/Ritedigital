@@ -52,6 +52,10 @@ export default function Sidebar() {
     secretario: [
   { href: "/dashboard/secretario", label: "Dashboard Secretaría" },
   { href: "/dashboard/directivo", label: "Dashboard Dirección" },
+
+  { href: "/mis-cursos", label: "Mis Cursos" },
+{ href: "/valoraciones", label: "Valoraciones" },
+{ href: "/calificaciones", label: "Calificaciones" },
   
 
   { href: "/alumnos", label: "Alumnos" },
@@ -60,7 +64,7 @@ export default function Sidebar() {
   { href: "/materias", label: "Materias" },
   { href: "/asignaciones", label: "Asignaciones" },
   { href: "/matriculas", label: "Matrículas" },
-
+    <p>Direccion</p>,
   { href: "/dashboard/directivo/valoraciones", label: "Valoraciones" },
   { href: "/dashboard/directivo/calificaciones", label: "Calificaciones" },
   { href: "/dashboard/directivo/asistencias", label: "Asistencias" },
